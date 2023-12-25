@@ -2,10 +2,10 @@
     {
         "_id": "5d7a514b5d2c12c7449be042",
         "name": "admin jasa",
-        "email": "admin-jasa@gmail.com",
+        "email": "admin@mail.com",
         "phone": "0852",
         "password": "admin123",
-        "role": "super admin",
+        "role": "admin",
         "verified": "true",
         "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
     }
