@@ -52,20 +52,17 @@ module.exports = {
                 // secure: true,
                 service: "gmail",
                 auth: {
-                    user: "backendproject010101@gmail.com",
-                    pass: "fzkeehrkmvvsaaao",
+                    user: "barokah.t.sejahtera@gmail.com",
+                    pass: "pauloeaxyzztaihq",
                 },
             });
 
             // compose email message
             const mailOptions = {
-                from: "backendproject010101@gmail.com",
+                from: "barokah.t.sejahtera@gmail.com",
                 to: email,
                 subject: "OTP Verification",
                 html: ` 
-            <div style: "justify-content: center;">
-            <img src="https://i.postimg.cc/3wHCdWxd/image-auth.jpg" style= "height: 150px;">
-            </div>
             <center>
             <h1 style="text-align: center; font-family: Arial, sans-serif; background-color: #DEC9FF;">Verification Code</h1>
             <p style="font-size: 17px; text-align: left; font-family: Arial, sans-serif";">To verify your account, enter this code below:</p>

@@ -20,8 +20,15 @@ const {
     updateUserWithToken,
     deleteUser,
 } = require("../controllers/userController");
+const { createBooking } = require("../controllers/bookingController");
+const {
+    getTransactionUserId,
+    getTransactionById,
+} = require("../controllers/transactionController");
 
 const router = express.Router();
+
+// Auth
 
 router.get("/", handleRoot);
 
@@ -47,6 +54,14 @@ router.delete("/user/:id", authorize, deleteUser);
 
 router.get("/whoami", authorize, whoami);
 
-// router.post("/register-admin");
+// Booking
+
+router.post("/booking", authorize, createBooking);
+
+// Transaction
+
+router.get("/transaction", authorize, getTransactionUserId);
+
+router.get("/transaction/:id", authorize, getTransactionById);
 
 module.exports = router;

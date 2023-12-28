@@ -57,14 +57,14 @@ module.exports = {
                 // secure: true,
                 service: "gmail",
                 auth: {
-                    user: "backendproject010101@gmail.com",
-                    pass: "fzkeehrkmvvsaaao",
+                    user: "barokah.t.sejahtera@gmail.com",
+                    pass: "pauloeaxyzztaihq",
                 },
             });
 
             // compose email message
             const mailOptions = {
-                from: "backendproject010101@gmail.com",
+                from: "barokah.t.sejahtera@gmail.com",
                 to: email,
                 subject: "OTP Verification",
                 html: ` 
