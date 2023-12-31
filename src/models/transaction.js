@@ -17,7 +17,7 @@ const Transaction = new Schema({
         default: uuidv4,
         ref: "Booking",
     },
-    proofOfTransfer: {
+    image: {
         type: String,
         required: false,
     },

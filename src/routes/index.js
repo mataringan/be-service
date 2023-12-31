@@ -24,6 +24,9 @@ const { createBooking } = require("../controllers/bookingController");
 const {
     getTransactionUserId,
     getTransactionById,
+    getUnverifiedTransaction,
+    getUnverifiedTransactionAdmin,
+    updateTransactionUnverified,
 } = require("../controllers/transactionController");
 
 const router = express.Router();
@@ -63,5 +66,20 @@ router.post("/booking", authorize, createBooking);
 router.get("/transaction", authorize, getTransactionUserId);
 
 router.get("/transaction/:id", authorize, getTransactionById);
+
+router.get("/transaction-unverified", authorize, getUnverifiedTransaction);
+
+router.get(
+    "/transaction-unverified-admin",
+    authorize,
+    getUnverifiedTransactionAdmin
+);
+
+router.put(
+    "/pay-transaction/:id",
+    authorize,
+    validator,
+    updateTransactionUnverified
+);
 
 module.exports = router;

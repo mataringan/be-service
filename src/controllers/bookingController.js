@@ -31,7 +31,7 @@ module.exports = {
                 userId,
                 idBooking: booking._id,
                 status: "Belum Terverifikasi",
-                proofOfTransfer: "",
+                image: "",
             });
 
             const htmlData = `
