@@ -27,11 +27,16 @@ const {
     getUnverifiedTransaction,
     getUnverifiedTransactionAdmin,
     updateTransactionUnverified,
-    getPayTransaction,
     updateStatusTransaction,
     deleteTransaction,
+    getPayTransactionUser,
+    getPayTransactionAdmin,
+    getPaymenTransactionDataUser,
 } = require("../controllers/transactionController");
-const { createInformation } = require("../controllers/informationController");
+const {
+    createInformation,
+    getAllInformation,
+} = require("../controllers/informationController");
 
 const router = express.Router();
 
@@ -86,7 +91,11 @@ router.put(
     updateTransactionUnverified
 );
 
-router.get("/user-transaction", authorize, getPayTransaction);
+router.get("/admin-transaction", authorize, getPayTransactionAdmin);
+
+router.get("/user-transaction", authorize, getPayTransactionUser);
+
+router.get("/user-payment", authorize, getPaymenTransactionDataUser);
 
 router.put("/update-status/:id", authorize, updateStatusTransaction);
 
@@ -95,5 +104,7 @@ router.delete("/transaction/:id", authorize, deleteTransaction);
 // Information
 
 router.post("/information", validator, authorize, createInformation);
+
+router.get("/information", getAllInformation);
 
 module.exports = router;
