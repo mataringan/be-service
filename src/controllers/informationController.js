@@ -5,7 +5,7 @@ const cloudinary = require("../middleware/cloudinary");
 module.exports = {
     async createInformation(req, res) {
         try {
-            const { title, image, description, date } = req.body;
+            const { title, description, date } = req.body;
 
             if (req.user.role !== "admin") {
                 return res.status(403).json({
@@ -61,6 +61,108 @@ module.exports = {
                 status: "success",
                 message: "get All information successfully",
                 data: information,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: "error",
+                message: error.message,
+            });
+        }
+    },
+
+    async getInformationById(req, res) {
+        try {
+            const _id = req.params.id;
+
+            const information = await Information.findOne({ _id });
+
+            res.status(200).json({
+                status: "success",
+                message: "get information by id successfully",
+                data: information,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: "error",
+                message: error.message,
+            });
+        }
+    },
+
+    async updateInformation(req, res) {
+        try {
+            const _id = req.params.id;
+            const { title, description, date } = req.body;
+            const information = await Information.findOne({ _id });
+
+            if (req.user.role !== "admin") {
+                return res.status(403).json({
+                    status: "error",
+                    message: "only admin can update information",
+                });
+            }
+
+            if (req.file) {
+                const fileBase64 = req.file.buffer.toString("base64");
+                const file = `data:${req.file.mimetype};base64,${fileBase64}`;
+
+                cloudinary.uploader.upload(
+                    file,
+                    { folder: "information-update" },
+                    async function (err, result) {
+                        if (!!err) {
+                            res.status(400).json({
+                                status: "upload fail",
+                                message: err.message,
+                            });
+                        }
+                        information._id = information._id;
+                        information.title = title;
+                        information.description = description;
+                        information.image = result.url;
+                        information.date = date;
+
+                        await information.save();
+
+                        res.status(200).json({
+                            status: "success",
+                            message: "information update successfully",
+                        });
+                    }
+                );
+            }
+        } catch (error) {
+            return res.status(500).json({
+                status: "error",
+                message: error.message,
+            });
+        }
+    },
+
+    async deleteInformation(req, res) {
+        try {
+            if (req.user.role !== "admin") {
+                return res.status(403).json({
+                    status: "forbidden",
+                    message: "only admin can delete information",
+                });
+            }
+            const _id = req.params.id;
+
+            const information = await Information.findById(_id);
+
+            if (!information) {
+                return res.status(404).json({
+                    status: "error",
+                    message: "information not found",
+                });
+            }
+
+            await Information.findByIdAndDelete(_id);
+
+            res.status(200).json({
+                status: "success",
+                message: "delete information successfully",
             });
         } catch (error) {
             return res.status(500).json({
