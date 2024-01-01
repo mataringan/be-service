@@ -27,7 +27,11 @@ const {
     getUnverifiedTransaction,
     getUnverifiedTransactionAdmin,
     updateTransactionUnverified,
+    getPayTransaction,
+    updateStatusTransaction,
+    deleteTransaction,
 } = require("../controllers/transactionController");
+const { createInformation } = require("../controllers/informationController");
 
 const router = express.Router();
 
@@ -81,5 +85,15 @@ router.put(
     validator,
     updateTransactionUnverified
 );
+
+router.get("/user-transaction", authorize, getPayTransaction);
+
+router.put("/update-status/:id", authorize, updateStatusTransaction);
+
+router.delete("/transaction/:id", authorize, deleteTransaction);
+
+// Information
+
+router.post("/information", validator, authorize, createInformation);
 
 module.exports = router;

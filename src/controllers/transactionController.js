@@ -1,5 +1,7 @@
 const Transaction = require("../models/transaction");
+const User = require("../models/user");
 const cloudinary = require("../middleware/cloudinary");
+const { sendTransactionDataByEmail } = require("./emailController");
 
 module.exports = {
     async getTransactionUserId(req, res) {
@@ -182,8 +184,8 @@ module.exports = {
                     file,
                     { folder: "transaction" },
                     async function (err, result) {
-                        if (!!res) {
-                            return res.status(400).json({
+                        if (!!err) {
+                            res.status(400).json({
                                 status: "upload fail",
                                 message: err.message,
                             });
@@ -203,6 +205,107 @@ module.exports = {
                     }
                 );
             }
+        } catch (error) {
+            return res.status(500).json({
+                status: "error",
+                message: error.message,
+            });
+        }
+    },
+
+    async getPayTransaction(req, res) {
+        try {
+            if (req.user.role !== "admin") {
+                return res.status(403).json({
+                    status: "forbidden",
+                    message: "only admin can get pay transaction",
+                });
+            }
+
+            // Use Mongoose query to find transactions with non-empty images
+            const transaction = await Transaction.find({ image: { $ne: "" } });
+
+            res.status(200).json({
+                status: "success",
+                message: "get data pay transaction successfully",
+                data: transaction,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: "error",
+                message: error.message,
+            });
+        }
+    },
+
+    async updateStatusTransaction(req, res) {
+        try {
+            const _id = req.params.id;
+
+            if (req.user.role !== "admin") {
+                return res.status(403).json({
+                    status: "forbidden",
+                    message: "only admin can update status transaction",
+                });
+            }
+
+            const transaction = await Transaction.findById(_id);
+
+            const user = await User.findOne({ _id: transaction.userId });
+
+            transaction.status = "Diverifikasi";
+            await transaction.save();
+
+            const htmlData = `
+            <html>
+                <head>
+                    <title>Status Pembayaran Diverifikasi</title>
+                </head>
+                <body>
+                    <h1>Selamat!</h1>
+                    <p>Pembayaran Anda untuk transaksi dengan ID ${_id} telah diverifikasi.</p>
+                </body>
+            </html>
+        `;
+            sendTransactionDataByEmail(user.email, htmlData);
+
+            res.status(200).json({
+                status: "success",
+                message: "update status transaction successfully",
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: "error",
+                message: error.message,
+            });
+        }
+    },
+
+    async deleteTransaction(req, res) {
+        try {
+            const _id = req.params.id;
+
+            if (req.user.role !== "admin") {
+                return res.status(403).json({
+                    status: "forbidden",
+                    message: "only admin can delete transaction",
+                });
+            }
+            const transaction = await Transaction.findById(_id);
+
+            if (!transaction) {
+                return res.status(404).json({
+                    status: "error",
+                    message: "transaction not found",
+                });
+            }
+
+            await Transaction.findByIdAndDelete(_id);
+
+            res.status(200).json({
+                status: "success",
+                message: "delete transaction successfully",
+            });
         } catch (error) {
             return res.status(500).json({
                 status: "error",
