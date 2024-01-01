@@ -312,6 +312,7 @@ module.exports = {
                     type_service: transaction.idBooking.type_service,
                     note: transaction.idBooking.note,
                 },
+                image: transaction.image,
                 status: transaction.status,
             }));
 
