@@ -36,6 +36,9 @@ const {
 const {
     createInformation,
     getAllInformation,
+    getInformationById,
+    updateInformation,
+    deleteInformation,
 } = require("../controllers/informationController");
 
 const router = express.Router();
@@ -106,5 +109,11 @@ router.delete("/transaction/:id", authorize, deleteTransaction);
 router.post("/information", validator, authorize, createInformation);
 
 router.get("/information", getAllInformation);
+
+router.get("/information/:id", getInformationById);
+
+router.put("/information/:id", validator, authorize, updateInformation);
+
+router.delete("/information/:id", authorize, deleteInformation);
 
 module.exports = router;
