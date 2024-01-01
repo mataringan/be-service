@@ -52,4 +52,21 @@ module.exports = {
             });
         }
     },
+
+    async getAllInformation(req, res) {
+        try {
+            const information = await Information.find();
+
+            res.status(200).json({
+                status: "success",
+                message: "get All information successfully",
+                data: information,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: "error",
+                message: error.message,
+            });
+        }
+    },
 };
