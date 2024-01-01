@@ -176,6 +176,13 @@ module.exports = {
                 // status: "Belum Terverifikasi",
             });
 
+            if (!transaction) {
+                return res.status(404).json({
+                    status: "error",
+                    message: "data transaction not found",
+                });
+            }
+
             if (req.file) {
                 const fileBase64 = req.file.buffer.toString("base64");
                 const file = `data:${req.file.mimetype};base64,${fileBase64}`;
