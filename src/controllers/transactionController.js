@@ -299,7 +299,7 @@ module.exports = {
                     path: "idBooking",
                     select: "name phone address date service type_service note",
                 })
-                .select("status");
+                .select("status image");
 
             const formattedData = transaction.map((transaction) => ({
                 _id: transaction._id,
