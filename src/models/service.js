@@ -24,10 +24,6 @@ const Service = new Schema(
             type: String,
             required: false,
         },
-        note: {
-            type: String,
-            required: false,
-        },
     },
     {
         timestamps: true,
