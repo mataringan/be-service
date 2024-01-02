@@ -53,7 +53,13 @@ module.exports = {
 
     async getAllDocumentation(req, res) {
         try {
-            const documentation = await Documentation.find();
+            const address = req.query.address ? req.query.address : "";
+
+            const querySearch = {
+                address: { $regex: new RegExp(address, "i") },
+            };
+
+            const documentation = await Documentation.find(querySearch);
 
             res.status(200).json({
                 status: "success",
