@@ -271,7 +271,12 @@ module.exports = {
             }
 
             // Use Mongoose query to find transactions with non-empty images
-            const transaction = await Transaction.find({ image: { $ne: "" } });
+            const transaction = await Transaction.find({ image: { $ne: "" } })
+                .populate({
+                    path: "idBooking",
+                    select: "name phone address date service type_service note",
+                })
+                .select("status image");
 
             res.status(200).json({
                 status: "success",
