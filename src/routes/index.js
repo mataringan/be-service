@@ -40,6 +40,24 @@ const {
     updateInformation,
     deleteInformation,
 } = require("../controllers/informationController");
+const {
+    createDocumentation,
+    getAllDocumentation,
+    getDocumentationById,
+    updateDocumentation,
+    deleteDocumentation,
+} = require("../controllers/documentationController");
+const {
+    createService,
+    getAllService,
+    getServiceById,
+    updateService,
+    deleteService,
+} = require("../controllers/serviceController");
+const {
+    createContact,
+    getAllContact,
+} = require("../controllers/contactController");
 
 const router = express.Router();
 
@@ -115,5 +133,35 @@ router.get("/information/:id", getInformationById);
 router.put("/information/:id", validator, authorize, updateInformation);
 
 router.delete("/information/:id", authorize, deleteInformation);
+
+// Documentation
+
+router.post("/documentation", validator, authorize, createDocumentation);
+
+router.get("/documentation", getAllDocumentation);
+
+router.get("/documentation/:id", getDocumentationById);
+
+router.put("/documentation/:id", validator, authorize, updateDocumentation);
+
+router.delete("/documentation/:id", authorize, deleteDocumentation);
+
+// Service
+
+router.post("/service", validator, authorize, createService);
+
+router.get("/service", getAllService);
+
+router.get("/service/:id", getServiceById);
+
+router.put("/service/:id", validator, authorize, updateService);
+
+router.delete("/service/:id", authorize, deleteService);
+
+// Contact
+
+router.post("/contact", authorize, createContact);
+
+router.get("/contact", getAllContact);
 
 module.exports = router;
