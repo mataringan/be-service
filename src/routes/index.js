@@ -57,6 +57,8 @@ const {
 const {
     createContact,
     getAllContact,
+    deleteAllContact,
+    deleteContact,
 } = require("../controllers/contactController");
 
 const router = express.Router();
@@ -162,6 +164,10 @@ router.delete("/service/:id", authorize, deleteService);
 
 router.post("/contact", authorize, createContact);
 
-router.get("/contact", getAllContact);
+router.get("/contact", authorize, getAllContact);
+
+router.delete("/contact/:id", authorize, deleteContact);
+
+router.delete("/contact", authorize, deleteAllContact);
 
 module.exports = router;
